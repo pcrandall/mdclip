@@ -1,0 +1,25 @@
+name: Build Go binaries
+
+# on:
+#   push:
+#     tags:
+#       - "*" # triggers only if push new tag version, like `0.8.4` or else
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Make binaries
+        uses: pcrandall/actions/golang-build@master
+        with:
+        github_token: ${{ secrets.GO_RELEASER_REPO_TOKEN }}
+        goos: ${{ matrix.goos }}
+        goarch: ${{ matrix.goarch }}
+        pre_command: go mod tidy
+        release_tag: v1.2
+        binary_name: "mdclip"
+        extra_files: LICENSE README.md
+        args: linux/amd64 windows/amd64 windows/386
