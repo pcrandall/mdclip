@@ -6,8 +6,11 @@ Uses [clipboard API](https://github.com/golang-design/clipboard) to grab image f
 
 Installation:
 
-    go get https://github.com/pcrandall/imgclipbase64
+    go get -u https://github.com/pcrandall/mdclip
 
+Manually install from releases page or use the below command
+
+    curl -s https://api.github.com/repos/pcrandall/mdclip/releases/latest | grep "browser_download_url" | cut -d '"' -f 4 | wget -qi - --output-document=mdclip
 
 Dependency
 
