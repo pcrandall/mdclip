@@ -1,23 +1,41 @@
+#
 # .github/workflows/release.yaml
-
 on:
   push:
     tags:
       - "*" # triggers only if push new tag version, like `0.8.4` or else
     # branches: [ master ]
+    #name: Create Release
 
 jobs:
-  releases-matrix:
+  build:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GO_RELEASER_REPO_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          body: |
+            Changes in this Release
+            - Automatic builds with github actions
+          draft: false
+          prerelease: false
+
+  releases-windows-matrix:
     name: Release Go Binary
     runs-on: ubuntu-latest
     strategy:
       matrix:
         # build and publish in parallel: linux/386, linux/amd64, windows/386, windows/amd64, darwin/amd64
-        goos: [windows, darwin]
+        goos: [windows]
         goarch: ["386", amd64]
-        exclude:
-          - goarch: "386"
-            goos: darwin
     steps:
     - uses: actions/checkout@v2
     - uses: wangyoucao577/go-release-action@v1.18
@@ -26,6 +44,57 @@ jobs:
         goos: ${{ matrix.goos }}
         goarch: ${{ matrix.goarch }}
         pre_command: go mod tidy
-        release_tag: v1.2
+        release_tag: v1.1
         binary_name: "mdclip"
         extra_files: LICENSE README.md
+
+  releases-darwin-matrix:
+    name: Release Darwin Go Binary
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # build and publish in parallel: linux/386, linux/amd64, windows/386, windows/amd64, darwin/amd64
+        goos: [darwin]
+        goarch: [amd64]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: wangyoucao577/go-release-action@v1.18
+      with:
+        github_token: ${{ secrets.GO_RELEASER_REPO_TOKEN }}
+        goos: ${{ matrix.goos }}
+        goarch: ${{ matrix.goarch }}
+        pre_command: apt-get install gcc-arm-linux-gnueabihf; export CROSS_COMPILE=arm-linux-gnueabihf- ; export CGO_ENABLED=1
+        release_tag: v1.1
+        binary_name: "mdclip"
+        extra_files: LICENSE README.md
+
+  setup-linux:
+    name: setup Linux
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: install xvfb libx11-dev
+        run: |
+          sudo apt update
+          sudo apt install -y xvfb libx11-dev
+          sudo apt-get clean
+  build-linux:
+      name: release Linux Go Binary
+      runs-on: ubuntu-latest
+      needs: setup-linux
+      strategy:
+        matrix:
+          os: [ubuntu-latest]
+          goos: [linux]
+          goarch: [amd64]
+      steps:
+      - uses: actions/checkout@v2
+      - uses: wangyoucao577/go-release-action@v1.18
+        with:
+          github_token: ${{ secrets.GO_RELEASER_REPO_TOKEN }}
+          goos: ${{ matrix.goos }}
+          goarch: ${{ matrix.goarch }}
+          pre_command: export CGO_ENABLED=0
+          release_tag: v1.1
+          binary_name: "mdclip"
+          extra_files: LICENSE README.md
