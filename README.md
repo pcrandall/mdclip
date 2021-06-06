@@ -4,13 +4,22 @@ Uses [clipboard API](https://github.com/golang-design/clipboard) to grab image f
 
 ![demo](./assets/demo.gif)
 
-Installation:
+Package installation
 
     go get -u https://github.com/pcrandall/mdclip
 
-Manually install from releases page or use the below command
 
-    curl -s https://api.github.com/repos/pcrandall/mdclip/releases/latest | grep "browser_download_url" | cut -d '"' -f 4 | wget -qi - --output-document=mdclip
+Install 64bit darwin
+
+    curl -s https://api.github.com/repos/pcrandall/mdclip/releases/latest | grep "browser_download_url" | cut -d '"' -f 4 | grep darwin | grep amd64.zip$ | wget -qi - --output-document=mdclip.zip && unzip -o mdclip.zip && rm mdclip.zip
+
+Install 64bit windows
+
+    curl -s https://api.github.com/repos/pcrandall/mdclip/releases/latest | grep "browser_download_url" | cut -d '"' -f 4 | grep windows | grep amd64.zip$ | wget -qi - --output-document=mdclip.zip && unzip -o mdclip.zip && rm mdclip.zip
+
+Install 32bit windows
+
+    curl -s https://api.github.com/repos/pcrandall/mdclip/releases/latest | grep "browser_download_url" | cut -d '"' -f 4 | grep windows | grep 386.zip$ | wget -qi - --output-document=mdclip.zip && unzip -o mdclip.zip && rm mdclip.zip
 
 Dependency
 
