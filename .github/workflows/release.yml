@@ -2,9 +2,9 @@
 
 on:
   push:
+    # branches: [ master ]
     tags:
       - "*" # triggers only if push new tag version, like `0.8.4` or else
-    # branches: [ master ]
 
 jobs:
   releases-matrix:
@@ -25,7 +25,6 @@ jobs:
         github_token: ${{ secrets.GO_RELEASER_GITHUB_TOKEN }}
         goos: ${{ matrix.goos }}
         goarch: ${{ matrix.goarch }}
-        # goversion: "https://dl.google.com/go/go1.13.1.linux-amd64.tar.gz"
-        goversion: 1.15
+        goversion: 1.16
         binary_name: "mdclip"
         extra_files: LICENSE README.md
