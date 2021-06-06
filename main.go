@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/base64"
 	"fmt"
-	"os"
 	"time"
 
 	"golang.design/x/clipboard"
@@ -20,15 +19,4 @@ func main() {
 
 	str := "![img_" + fmt.Sprintf("%d", unixTimestamp) + "](data:image/png;base64," + encodedString + ")"
 	clipboard.Write(clipboard.FmtText, []byte(str))
-
-	b := clipboard.Read(clipboard.FmtText)
-	for len(b) > 0 {
-		n, err := os.Stdout.Write(b)
-		if err != nil {
-			println("oops")
-			return
-		}
-		b = b[n:]
-	}
-	println("\033[H")
 }
