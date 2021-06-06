@@ -1,4 +1,4 @@
-# Convert screenshot to base64 encoded string for markdown files.
+# Convert image in clipboard to markdown formatted base64 encoded string.
 
 Uses [clipboard API](https://github.com/golang-design/clipboard) to grab image from clipboard.
 
