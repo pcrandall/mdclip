@@ -1,5 +1,8 @@
-module github.com/pcrandall/imgclipbase64
+module github.com/pcrandall/mdclip
 
 go 1.15
 
-require golang.design/x/clipboard v0.4.6
+require (
+	github.com/micmonay/keybd_event v1.1.1
+	golang.design/x/clipboard v0.4.6
+)
