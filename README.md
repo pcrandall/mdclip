@@ -11,7 +11,7 @@ Package installation
 
 Install 64bit darwin
 
-    curl -s https://api.github.com/repos/pcrandall/mdclip/releases/latest | grep "browser_download_url" | cut -d '"' -f 4 | grep darwin | grep amd64.zip$ | wget -qi - --output-document=mdclip.zip && unzip -o mdclip.zip && rm mdclip.zip
+    curl -s https://api.github.com/repos/pcrandall/mdclip/releases/latest | grep "browser_download_url" | cut -d '"' -f 4 | grep darwin | wget -qi - --output-document=mdclip.tar.gz && tar -xf mdclip.tar.gz && rm mdclip.tar.gz
 
 Install 64bit windows
 
